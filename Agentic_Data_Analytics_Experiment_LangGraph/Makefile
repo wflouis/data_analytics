@@ -1,6 +1,11 @@
 # Autonomous data analytics agents — common tasks
 VENV ?= .venv
+ifeq ($(OS),Windows_NT)
+PY := $(VENV)/Scripts/python.exe
+else
 PY := $(VENV)/bin/python
+endif
+PYTHON_BOOTSTRAP ?= python
 SANDBOX_USER ?= adasandbox
 PORT ?= 8000
 MLFLOW_PORT ?= 5000
@@ -8,7 +13,7 @@ MLFLOW_PORT ?= 5000
 .PHONY: setup sandbox-user frontend run dev demo test improve bench mlflow clean-runs
 
 setup: ## venv + python deps + frontend deps
-	test -d $(VENV) || python3 -m venv $(VENV)
+	test -d $(VENV) || $(PYTHON_BOOTSTRAP) -m venv $(VENV)
 	$(PY) -m pip install -q --upgrade pip
 	$(PY) -m pip install -q -r requirements.txt
 	cd frontend && npm install --no-fund --no-audit

@@ -13,7 +13,6 @@ and the `kit/` directory on PYTHONPATH (sitecustomize guard + ada_kit helpers).
 from __future__ import annotations
 
 import os
-import pwd
 import shutil
 import subprocess
 import sys
@@ -25,6 +24,11 @@ import httpx
 
 from ada.config import PROJECT_ROOT, Config
 from ada.paths import vault_root
+
+try:
+    import pwd
+except ImportError:  # Windows has no Unix passwd database.
+    pwd = None
 
 KIT_DIR = Path(__file__).resolve().parent / "kit"
 _PASSTHROUGH_ENV = ("LANG", "LC_ALL", "TZ")
@@ -50,6 +54,8 @@ class ExecResult:
 
 
 def _user_exists(name: str) -> bool:
+    if pwd is None:
+        return False
     try:
         pwd.getpwnam(name)
         return True

@@ -1,5 +1,5 @@
 {
-    "python.defaultInterpreterPath": "/usr/local/bin/python",
+    "python.defaultInterpreterPath": "python",
     "remote.autoForwardPorts": true,
     "remote.otherPortsAttributes": { "onAutoForward": "ignore" },
     "portsAttributes": {
